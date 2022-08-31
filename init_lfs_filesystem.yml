@@ -1,0 +1,36 @@
+- name: lfs
+  hosts: lfs_host
+  vars:
+    lfs_dir: /mnt/lfs
+    source_dir: "{{ lfs_dir }}/sources"
+  vars_files:
+    - versions.yml
+  become: yes
+  tasks:
+    - name: Create lfs group
+      group:
+        name: lfs
+        state: present
+    - name: Create lfs user
+      user:
+        name: lfs
+        group: lfs
+        shell: /bin/bash
+        create_home: yes
+        skeleton: /dev/null
+    - name: Create filesystem
+      file:
+        path: '{{ lfs_dir }}/{{ item }}'
+        state: directory
+        mode: '0755'
+        owner: lfs
+        group: lfs
+      loop:
+        - '{{ source_dir }}'
+        - etc
+        - var
+        - usr/bin
+        - usr/lib
+        - usr/lib64
+        - usr/sbin
+        - tools

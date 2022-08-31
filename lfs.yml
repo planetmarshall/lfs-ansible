@@ -1,0 +1,8 @@
+- name: lfs
+  hosts: lfs_host
+  vars:
+    lfs_dir: /mnt/lfs
+    source_dir: "{{ lfs_dir }}/sources"
+  vars_files:
+    - versions.yml
+    -

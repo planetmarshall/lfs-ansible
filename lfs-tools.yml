@@ -1,0 +1,63 @@
+- name: lfs-tools
+  hosts: lfs_host
+  become_user: lfs
+  become: yes
+  vars_files:
+    - vars/tools.yml
+  vars:
+    lfs_dir: /mnt/lfs
+    source_dir: '{{ lfs_dir }}/sources'
+  environment:
+    LFS: '{{ lfs_dir }}'
+  tasks:
+    - name: Set LFS_TGT
+      shell: echo $(uname -m)-lfs-linux-gnu
+      register: lfs_tgt_echo
+
+    - set_fact:
+        lfs_tgt: '{{ lfs_tgt_echo.stdout }}'
+
+    - name: download and extract binutils
+      unarchive:
+        src: '{{ tools.binutils.url }}'
+        dest: '{{ source_dir }}'
+        creates: '{{ source_dir }}/{{ tools.binutils.folder }}'
+        remote_src: yes
+
+    - name: create build folder
+      file:
+        path: '{{ source_dir }}/{{ tools.binutils.folder }}/build'
+        state: directory
+
+    - name: configure
+      shell: |
+        ../configure --prefix=$LFS/tools \
+             --with-sysroot=$LFS \
+             --target=$LFS_TGT   \
+             --disable-nls       \
+             --enable-gprofng=no \
+             --disable-werror
+      args:
+        chdir: '{{ source_dir }}/{{ tools.binutils.folder }}/build'
+
+    - name: compile
+      shell: make -j
+      args:
+        chdir: '{{ source_dir }}/{{ tools.binutils.folder }}/build'
+
+    - name: install
+      shell: make install
+      args:
+        chdir: '{{ source_dir }}/{{ tools.binutils.folder }}/build'
+
+
+
+
+
+
+
+
+
+
+
+

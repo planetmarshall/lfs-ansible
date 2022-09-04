@@ -1,0 +1,11 @@
+---
+tools:
+  gcc:
+    url: https://ftp.gnu.org/gnu/gcc/gcc-12.2.0/gcc-12.2.0.tar.xz
+  binutils:
+    url: https://ftp.gnu.org/gnu/binutils/binutils-2.39.tar.xz
+    folder: binutils-2.39
+  kernel:
+    url: https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.19.2.tar.xz
+  glibc:
+    url: https://ftp.gnu.org/gnu/glibc/glibc-2.36.tar.xz

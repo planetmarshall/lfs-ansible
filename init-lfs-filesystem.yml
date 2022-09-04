@@ -2,7 +2,6 @@
   hosts: lfs_host
   vars:
     lfs_dir: /mnt/lfs
-    source_dir: "{{ lfs_dir }}/sources"
   vars_files:
     - versions.yml
   become: yes
@@ -15,9 +14,17 @@
       user:
         name: lfs
         group: lfs
+        password: "{{ 'ansible' | password_hash('sha512', 'mysecretsalt') }}"
         shell: /bin/bash
         create_home: yes
         skeleton: /dev/null
+    - name: set lfs ownership
+      file:
+        path: '{{ lfs_dir }}'
+        state: touch
+        mode: '0755'
+        owner: lfs
+        group: lfs
     - name: Create filesystem
       file:
         path: '{{ lfs_dir }}/{{ item }}'
@@ -26,7 +33,7 @@
         owner: lfs
         group: lfs
       loop:
-        - '{{ source_dir }}'
+        - sources
         - etc
         - var
         - usr/bin

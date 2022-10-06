@@ -70,7 +70,7 @@
       block:
       - name: create build folder
         file:
-          path: {{ build_folder }}
+          path: '{{ build_folder }}'
         state: directory
 
       - name: configure gcc
@@ -95,17 +95,17 @@
               --disable-libstdcxx       \
               --enable-languages=c,c++
         args:
-          chdir: {{ build_folder }}
+          chdir: '{{ build_folder }}'
 
       - name: compile gcc
         shell: make -j
         args:
-          chdir: {{ build_folder }}
+          chdir: '{{ build_folder }}'
 
       - name: install gcc
         shell: make install
         args:
-          chdir: {{ build_folder }}
+          chdir: '{{ build_folder }}'
 
     - name: fix gcc headers
       shell: |

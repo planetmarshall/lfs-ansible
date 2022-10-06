@@ -5,10 +5,12 @@
   vars_files:
     - vars/tools.yml
   vars:
-    lfs_dir: /mnt/lfs
-    source_dir: '{{ lfs_dir }}/sources'
+    lfs_folder: /mnt/lfs
+    source_folder: '{{ lfs_folder }}/sources'
   environment:
-    LFS: '{{ lfs_dir }}'
+    LFS: '{{ lfs_folder }}'
+    CC: gcc
+    CXX: g++
   tasks:
     - name: Set LFS_TGT
       shell: echo $(uname -m)-lfs-linux-gnu
@@ -17,47 +19,98 @@
     - set_fact:
         lfs_tgt: '{{ lfs_tgt_echo.stdout }}'
 
-    - name: download and extract binutils
-      unarchive:
-        src: '{{ tools.binutils.url }}'
-        dest: '{{ source_dir }}'
-        creates: '{{ source_dir }}/{{ tools.binutils.folder }}'
-        remote_src: yes
+    - name: download and compile binutils
+      include_tasks: tasks/download_and_compile.yml
+      vars:
+        url: '{{ tools.binutils.url }}'
+        tool_folder: '{{ source_folder }}/{{ tools.binutils.folder }}'
+        configure: >
+          ../configure --prefix=$LFS/tools \
+                       --with-sysroot=$LFS \
+                       --target={{ lfs_tgt }} \
+                       --disable-nls       \
+                       --enable-gprofng=no \
+                       --disable-werror
 
-    - name: create build folder
+    - name: download gcc and dependencies
+      unarchive:
+        src: '{{ item.url }}'
+        dest: '{{ source_folder }}'
+        creates: "{{ item.folder }}"
+        remote_src: yes
+      loop:
+        - '{{ tools.gcc }}'
+        - '{{ tools.mpfr }}'
+        - '{{ tools.gmp }}'
+        - '{{ tools.mpc }}'
+
+    - name: link gcc dependencies
       file:
-        path: '{{ source_dir }}/{{ tools.binutils.folder }}/build'
+        src: '{{ source_folder }}/{{ item.value.folder }}'
+        dest: '{{ source_folder }}/{{ tools.gcc.folder }}/{{ item.name }}'
+        state: link
+      loop:
+        - { name: mpfr, value: '{{ tools.mpfr }}' }
+        - { name: gmp, value: '{{ tools.gmp }}' }
+        - { name: mpc, value: '{{ tools.mpc }}' }
+
+    - name: gcc pre install config
+      shell: |
+        case $(uname -m) in
+          x86_64)
+            sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
+          ;;
+        esac
+      args:
+        chdir: '{{ source_folder }}/{{ tools.gcc.folder }}'
+
+    - name: build gcc
+      vars:
+        build_folder: '{{ source_folder }}/{{ tools.gcc.folder }}/build'
+      block:
+      - name: create build folder
+        file:
+          path: {{ build_folder }}
         state: directory
 
-    - name: configure
+      - name: configure gcc
+        shell: |
+          ../configure                  \
+              --target=$LFS_TGT         \
+              --prefix=$LFS/tools       \
+              --with-glibc-version=2.36 \
+              --with-sysroot=$LFS       \
+              --with-newlib             \
+              --without-headers         \
+              --disable-nls             \
+              --disable-shared          \
+              --disable-multilib        \
+              --disable-decimal-float   \
+              --disable-threads         \
+              --disable-libatomic       \
+              --disable-libgomp         \
+              --disable-libquadmath     \
+              --disable-libssp          \
+              --disable-libvtv          \
+              --disable-libstdcxx       \
+              --enable-languages=c,c++
+        args:
+          chdir: {{ build_folder }}
+
+      - name: compile gcc
+        shell: make -j
+        args:
+          chdir: {{ build_folder }}
+
+      - name: install gcc
+        shell: make install
+        args:
+          chdir: {{ build_folder }}
+
+    - name: fix gcc headers
       shell: |
-        ../configure --prefix=$LFS/tools \
-             --with-sysroot=$LFS \
-             --target=$LFS_TGT   \
-             --disable-nls       \
-             --enable-gprofng=no \
-             --disable-werror
+          cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+            `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/install-tools/include/limits.h
       args:
-        chdir: '{{ source_dir }}/{{ tools.binutils.folder }}/build'
-
-    - name: compile
-      shell: make -j
-      args:
-        chdir: '{{ source_dir }}/{{ tools.binutils.folder }}/build'
-
-    - name: install
-      shell: make install
-      args:
-        chdir: '{{ source_dir }}/{{ tools.binutils.folder }}/build'
-
-
-
-
-
-
-
-
-
-
-
+        chdir: '{{ source_folder }}/{{ tools.gcc.folder }}'
 

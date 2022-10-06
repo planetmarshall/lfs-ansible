@@ -1,6 +1,29 @@
 ---
-- name: Download acl
+
+- name: download and extract package
   unarchive:
     src: '{{ url }}'
-    dest: '{{ source_dir }}'
+    dest: '{{ source_folder }}'
+    creates: '{{ tool_folder }}'
     remote_src: yes
+
+- name: create build folder
+  file:
+    path: '{{ tool_folder }}/build'
+    state: directory
+
+- name: configure
+  shell: '{{ configure }}'
+  args:
+    chdir: '{{ tool_folder }}/build'
+    creates: config.status
+
+- name: compile
+  shell: make -j
+  args:
+    chdir: '{{ tool_folder }}/build'
+
+- name: install
+  shell: make install
+  args:
+    chdir: '{{ tool_folder }}/build'

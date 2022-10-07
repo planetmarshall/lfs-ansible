@@ -30,12 +30,18 @@ tools:
     folder: bison-3.8.2
     url: https://ftp.gnu.org/gnu/bison/bison-3.8.2.tar.xz
   bzip2:
+    folder: bzip2-1.0.8
+    url: https://www.sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+  bzip2-patch:
     folder: bzip2-1.0.8-install_docs-1
     url: https://www.linuxfromscratch.org/patches/lfs/development/bzip2-1.0.8-install_docs-1.patch
   check:
     folder: check-0.15.2
     url: https://github.com/libcheck/check/releases/download/0.15.2/check-0.15.2.tar.gz
   coreutils:
+    folder: coreutils-9.1
+    url: https://ftp.gnu.org/gnu/coreutils/coreutils-9.1.tar.xz
+  coreutils-patch:
     folder: coreutils-9.1-i18n-1
     url: https://www.linuxfromscratch.org/patches/lfs/development/coreutils-9.1-i18n-1.patch
   dejagnu:
@@ -81,6 +87,9 @@ tools:
     folder: gettext-0.21
     url: https://ftp.gnu.org/gnu/gettext/gettext-0.21.tar.xz
   glibc:
+    folder: glibc-2.36
+    url: https://ftp.gnu.org/gnu/glibc/glibc-2.36.tar.xz
+  glibc-patch:
     folder: glibc-2.36-fhs-1
     url: https://www.linuxfromscratch.org/patches/lfs/development/glibc-2.36-fhs-1.patch
   gmp:
@@ -114,6 +123,9 @@ tools:
     folder: iproute2-5.19.0
     url: https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-5.19.0.tar.xz
   kbd:
+    folder: kbd-2.5.1
+    url: https://www.kernel.org/pub/linux/utils/kbd/kbd-2.5.1.tar.xz
+  kbd-patch:
     folder: kbd-2.5.1-backspace-1
     url: https://www.linuxfromscratch.org/patches/lfs/development/kbd-2.5.1-backspace-1.patch
   kmod:
@@ -201,6 +213,9 @@ tools:
     folder: sysklogd-1.5.1
     url: https://www.infodrom.org/projects/sysklogd/download/sysklogd-1.5.1.tar.gz
   sysvinit:
+    folder: sysvinit-3.04
+    url: https://download.savannah.gnu.org/releases/sysvinit/sysvinit-3.04.tar.xz
+  sysvinit-patch:
     folder: sysvinit-3.04-consolidated-1
     url: https://www.linuxfromscratch.org/patches/lfs/development/sysvinit-3.04-consolidated-1.patch
   tar:
@@ -237,5 +252,8 @@ tools:
     folder: zlib-1.2.12
     url: https://zlib.net/zlib-1.2.12.tar.xz
   zstd:
+    folder: zstd-1.5.2
+    url: https://github.com/facebook/zstd/releases/download/v1.5.2/zstd-1.5.2.tar.gz
+  zstd-patch:
     folder: zstd-1.5.2-upstream_fixes-1
     url: https://www.linuxfromscratch.org/patches/lfs/development/zstd-1.5.2-upstream_fixes-1.patch

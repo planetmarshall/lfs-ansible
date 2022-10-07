@@ -141,4 +141,72 @@
           args:
             chdir: '{{ folder }}'
 
+    - name: install glibc
+      vars:
+        folder: '{{ source_folder }}/{{ tools.glibc.folder }}'
+        build_folder: '{{ source_folder }}/{{ tools.glibc.folder }}/build'
+      block:
+        - name: download glibc
+          unarchive:
+            src: '{{ tools.glibc.url }}'
+            dest: '{{ source_folder }}'
+            creates: "{{ folder }}"
+            remote_src: yes
+
+        - name: create symbolic link for lsb compliance
+          shell: |
+              case $(uname -m) in
+                i?86)   ln -sfv ld-linux.so.2 $LFS/lib/ld-lsb.so.3
+                ;;
+                x86_64) ln -sfv ../lib/ld-linux-x86-64.so.2 $LFS/lib64
+                  ln -sfv ../lib/ld-linux-x86-64.so.2 $LFS/lib64/ld-lsb-x86-64.so.3
+              ;;
+              esac
+          args:
+            chdir: '{{ folder }}'
+
+        - name: apply patch
+          ansible.posix.patch:
+            src: '{{ tools.glibc-patch.url }}'
+            remote_src: true
+            basedir: '{{ folder }}'
+
+        - name: create build folder
+          file:
+            path: '{{ build_folder }}'
+            state: directory
+
+        - name: install ldconfig and sln
+          shell: echo "rootsbindir=/usr/sbin" > configparms
+          args:
+            chdir: '{{ folder }}'
+
+        - name: configure glibc
+          shell: |
+              ../configure                         \
+                --prefix=/usr                      \
+                --host=$LFS_TGT                    \
+                --build=$(../scripts/config.guess) \
+                --enable-kernel=3.2                \
+                --with-headers=$LFS/usr/include    \
+                libc_cv_slibdir=/usr/lib
+          args:
+            chdir: '{{ build_folder }}'
+
+        - name: build glibc
+          shell: make -j
+          args:
+            chdir: '{{ build_folder }}'
+
+        - name: install glibc
+          shell: make DESTDIR=$LFS install
+          args:
+            chdir: '{{ build_folder }}'
+
+        - name: fix executable loader path
+          shell: sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
+
+        - name: fix limits.h installation
+          shell: $LFS/tools/libexec/gcc/$LFS_TGT/12.2.0/install-tools/mkheaders
+
 

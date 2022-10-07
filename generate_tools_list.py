@@ -27,10 +27,12 @@ def package_info(packages):
             name = lookup[folder]
         else:
             name = match2.group(1)
-        yield name, {
-            "url": package_url,
-            "folder": match.group(1)
-        }
+
+
+        if basename.endswith("patch"):
+            name += "-patch"
+
+        yield name, { "url": package_url, "folder": match.group(1) }
 
 
 with open(os.path.join("vars", "tools.yml"), "w") as fp:

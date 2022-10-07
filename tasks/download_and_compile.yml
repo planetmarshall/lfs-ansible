@@ -7,10 +7,22 @@
     creates: '{{ tool_folder }}'
     remote_src: yes
 
+- name: apply patches
+  ansible.posix.patch:
+    basedir: '{{ tool_folder }}'
+    remote_src: yes
+    src: '{{ item }}'
+  loop: '{{ patch_files }}'
+  when: patch_files is defined
+
 - name: create build folder
   file:
     path: '{{ tool_folder }}/build'
     state: directory
+
+- name: preconfigure
+  shell: '{{ preconfigure }}'
+  when: preconfigure is defined
 
 - name: configure
   shell: '{{ configure }}'

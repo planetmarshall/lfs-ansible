@@ -1,174 +1,241 @@
 tools:
-  python:
-    url: https://www.python.org/ftp/python/3.10.6/Python-3.10.6.tar.xz
-  xml:
+  Python:
+    folder: Python-3.10.7
+    url: https://www.python.org/ftp/python/3.10.7/Python-3.10.7.tar.xz
+  XML-Parser:
+    folder: XML-Parser-2.46
     url: https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.46.tar.gz
   acl:
+    folder: acl-2.3.1
     url: https://download.savannah.gnu.org/releases/acl/acl-2.3.1.tar.xz
   attr:
+    folder: attr-2.5.1
     url: https://download.savannah.gnu.org/releases/attr/attr-2.5.1.tar.gz
   autoconf:
+    folder: autoconf-2.71
     url: https://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.xz
   automake:
+    folder: automake-1.16.5
     url: https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.xz
   bash:
-    url: https://ftp.gnu.org/gnu/bash/bash-5.1.16.tar.gz
+    folder: bash-5.2
+    url: https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz
   bc:
-    url: https://github.com/gavinhoward/bc/releases/download/6.0.1/bc-6.0.1.tar.xz
+    folder: bc-6.0.4
+    url: https://github.com/gavinhoward/bc/releases/download/6.0.4/bc-6.0.4.tar.xz
   binutils:
-    url: https://ftp.gnu.org/gnu/binutils/binutils-2.39.tar.xz
     folder: binutils-2.39
+    url: https://ftp.gnu.org/gnu/binutils/binutils-2.39.tar.xz
   bison:
+    folder: bison-3.8.2
     url: https://ftp.gnu.org/gnu/bison/bison-3.8.2.tar.xz
   bzip2:
-    url: https://www.sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
-  bzip2.patch:
-    url: https://www.linuxfromscratch.org/patches/lfs/11.2-rc1/bzip2-1.0.8-install_docs-1.patch
+    folder: bzip2-1.0.8-install_docs-1
+    url: https://www.linuxfromscratch.org/patches/lfs/development/bzip2-1.0.8-install_docs-1.patch
   check:
+    folder: check-0.15.2
     url: https://github.com/libcheck/check/releases/download/0.15.2/check-0.15.2.tar.gz
   coreutils:
-    url: https://ftp.gnu.org/gnu/coreutils/coreutils-9.1.tar.xz
-  coreutils.patch:
-    url: https://www.linuxfromscratch.org/patches/lfs/11.2-rc1/coreutils-9.1-i18n-1.patch
+    folder: coreutils-9.1-i18n-1
+    url: https://www.linuxfromscratch.org/patches/lfs/development/coreutils-9.1-i18n-1.patch
   dejagnu:
+    folder: dejagnu-1.6.3
     url: https://ftp.gnu.org/gnu/dejagnu/dejagnu-1.6.3.tar.gz
   diffutils:
+    folder: diffutils-3.8
     url: https://ftp.gnu.org/gnu/diffutils/diffutils-3.8.tar.xz
   e2fsprogs:
+    folder: e2fsprogs-1.46.5
     url: https://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v1.46.5/e2fsprogs-1.46.5.tar.gz
   elfutils:
+    folder: elfutils-0.187
     url: https://sourceware.org/ftp/elfutils/0.187/elfutils-0.187.tar.bz2
   eudev:
+    folder: eudev-3.2.11
     url: https://github.com/eudev-project/eudev/releases/download/v3.2.11/eudev-3.2.11.tar.gz
   expat:
-    url: https://prdownloads.sourceforge.net/expat/expat-2.4.8.tar.xz
+    folder: expat-2.4.9
+    url: https://prdownloads.sourceforge.net/expat/expat-2.4.9.tar.xz
   expect5:
+    folder: expect5.45.4
     url: https://prdownloads.sourceforge.net/expect/expect5.45.4.tar.gz
   file:
-    url: https://astron.com/pub/file/file-5.42.tar.gz
+    folder: file-5.43
+    url: https://astron.com/pub/file/file-5.43.tar.gz
   findutils:
+    folder: findutils-4.9.0
     url: https://ftp.gnu.org/gnu/findutils/findutils-4.9.0.tar.xz
   flex:
+    folder: flex-2.6.4
     url: https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
   gawk:
-    url: https://ftp.gnu.org/gnu/gawk/gawk-5.1.1.tar.xz
+    folder: gawk-5.2.0
+    url: https://ftp.gnu.org/gnu/gawk/gawk-5.2.0.tar.xz
   gcc:
-    url: https://ftp.gnu.org/gnu/gcc/gcc-12.2.0/gcc-12.2.0.tar.xz
     folder: gcc-12.2.0
+    url: https://ftp.gnu.org/gnu/gcc/gcc-12.2.0/gcc-12.2.0.tar.xz
   gdbm:
+    folder: gdbm-1.23
     url: https://ftp.gnu.org/gnu/gdbm/gdbm-1.23.tar.gz
   gettext:
+    folder: gettext-0.21
     url: https://ftp.gnu.org/gnu/gettext/gettext-0.21.tar.xz
   glibc:
-    url: https://ftp.gnu.org/gnu/glibc/glibc-2.36.tar.xz
-  glibc.patch:
-    url: https://www.linuxfromscratch.org/patches/lfs/11.2-rc1/glibc-2.36-fhs-1.patch
+    folder: glibc-2.36-fhs-1
+    url: https://www.linuxfromscratch.org/patches/lfs/development/glibc-2.36-fhs-1.patch
   gmp:
-    url: https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz
     folder: gmp-6.2.1
+    url: https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz
   gperf:
+    folder: gperf-3.1
     url: https://ftp.gnu.org/gnu/gperf/gperf-3.1.tar.gz
   grep:
-    url: https://ftp.gnu.org/gnu/grep/grep-3.7.tar.xz
+    folder: grep-3.8
+    url: https://ftp.gnu.org/gnu/grep/grep-3.8.tar.xz
   groff:
+    folder: groff-1.22.4
     url: https://ftp.gnu.org/gnu/groff/groff-1.22.4.tar.gz
   grub:
+    folder: grub-2.06
     url: https://ftp.gnu.org/gnu/grub/grub-2.06.tar.xz
   gzip:
+    folder: gzip-1.12
     url: https://ftp.gnu.org/gnu/gzip/gzip-1.12.tar.xz
-  iana:
-    url: https://github.com/Mic92/iana-etc/releases/download/20220812/iana-etc-20220812.tar.gz
+  iana-etc:
+    folder: iana-etc-20220922
+    url: https://github.com/Mic92/iana-etc/releases/download/20220922/iana-etc-20220922.tar.gz
   inetutils:
+    folder: inetutils-2.3
     url: https://ftp.gnu.org/gnu/inetutils/inetutils-2.3.tar.xz
   intltool:
+    folder: intltool-0.51.0
     url: https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
   iproute2:
+    folder: iproute2-5.19.0
     url: https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-5.19.0.tar.xz
   kbd:
-    url: https://www.kernel.org/pub/linux/utils/kbd/kbd-2.5.1.tar.xz
-  kbd.patch:
-    url: https://www.linuxfromscratch.org/patches/lfs/11.2-rc1/kbd-2.5.1-backspace-1.patch
+    folder: kbd-2.5.1-backspace-1
+    url: https://www.linuxfromscratch.org/patches/lfs/development/kbd-2.5.1-backspace-1.patch
   kmod:
+    folder: kmod-30
     url: https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-30.tar.xz
   less:
-    url: https://www.greenwoodsoftware.com/less/less-590.tar.gz
-  lfs:
-    url: https://www.linuxfromscratch.org/lfs/downloads/11.2-rc1/lfs-bootscripts-20220723.tar.xz
+    folder: less-608
+    url: https://www.greenwoodsoftware.com/less/less-608.tar.gz
+  lfs-bootscripts:
+    folder: lfs-bootscripts-20220920
+    url: https://www.linuxfromscratch.org/lfs/downloads/development/lfs-bootscripts-20220920.tar.xz
   libcap:
-    url: https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.65.tar.xz
+    folder: libcap-2.66
+    url: https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.66.tar.xz
   libffi:
-    url: https://github.com/libffi/libffi/releases/download/v3.4.2/libffi-3.4.2.tar.gz
+    folder: libffi-3.4.3
+    url: https://github.com/libffi/libffi/releases/download/v3.4.3/libffi-3.4.3.tar.gz
   libpipeline:
+    folder: libpipeline-1.5.6
     url: https://download.savannah.gnu.org/releases/libpipeline/libpipeline-1.5.6.tar.gz
   libtool:
+    folder: libtool-2.4.7
     url: https://ftp.gnu.org/gnu/libtool/libtool-2.4.7.tar.xz
   linux:
-    url: https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.19.2.tar.xz
+    folder: linux-5.19.13
+    url: https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.19.13.tar.xz
   m4:
+    folder: m4-1.4.19
     url: https://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.xz
   make:
+    folder: make-4.3
     url: https://ftp.gnu.org/gnu/make/make-4.3.tar.gz
-  man:
+  man-db:
+    folder: man-db-2.10.2
+    url: https://download.savannah.gnu.org/releases/man-db/man-db-2.10.2.tar.xz
+  man-pages:
+    folder: man-pages-5.13
     url: https://www.kernel.org/pub/linux/docs/man-pages/man-pages-5.13.tar.xz
   meson:
-    url: https://github.com/mesonbuild/meson/releases/download/0.63.1/meson-0.63.1.tar.gz
+    folder: meson-0.63.2
+    url: https://github.com/mesonbuild/meson/releases/download/0.63.2/meson-0.63.2.tar.gz
   mpc:
-    url: https://ftp.gnu.org/gnu/mpc/mpc-1.2.1.tar.gz
     folder: mpc-1.2.1
+    url: https://ftp.gnu.org/gnu/mpc/mpc-1.2.1.tar.gz
   mpfr:
-    url: https://ftp.gnu.org/gnu/mpfr/mpfr-4.1.0.tar.xz
     folder: mpfr-4.1.0
+    url: https://ftp.gnu.org/gnu/mpfr/mpfr-4.1.0.tar.xz
   ncurses:
+    folder: ncurses-6.3
     url: https://invisible-mirror.net/archives/ncurses/ncurses-6.3.tar.gz
   ninja:
-    url: https://github.com/ninja-build/ninja/archive/v1.11.0/ninja-1.11.0.tar.gz
+    folder: ninja-1.11.1
+    url: https://github.com/ninja-build/ninja/archive/v1.11.1/ninja-1.11.1.tar.gz
   openssl:
+    folder: openssl-3.0.5
     url: https://www.openssl.org/source/openssl-3.0.5.tar.gz
   patch:
+    folder: patch-2.7.6
     url: https://ftp.gnu.org/gnu/patch/patch-2.7.6.tar.xz
   perl:
+    folder: perl-5.36.0
     url: https://www.cpan.org/src/5.0/perl-5.36.0.tar.xz
-  pkg:
+  pkg-config:
+    folder: pkg-config-0.29.2
     url: https://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz
-  procps:
+  procps-ng:
+    folder: procps-ng-4.0.0
     url: https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-4.0.0.tar.xz
   psmisc:
+    folder: psmisc-23.5
     url: https://sourceforge.net/projects/psmisc/files/psmisc/psmisc-23.5.tar.xz
-  python_docs:
-    url: https://www.python.org/ftp/python/doc/3.10.6/python-3.10.6-docs-html.tar.bz2
+  python:
+    folder: python-3.10.7-docs-html
+    url: https://www.python.org/ftp/python/doc/3.10.7/python-3.10.7-docs-html.tar.bz2
   readline:
-    url: https://ftp.gnu.org/gnu/readline/readline-8.1.2.tar.gz
+    folder: readline-8.2
+    url: https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz
   sed:
+    folder: sed-4.8
     url: https://ftp.gnu.org/gnu/sed/sed-4.8.tar.xz
   shadow:
-    url: https://github.com/shadow-maint/shadow/releases/download/4.12.2/shadow-4.12.2.tar.xz
+    folder: shadow-4.12.3
+    url: https://github.com/shadow-maint/shadow/releases/download/4.12.3/shadow-4.12.3.tar.xz
   sysklogd:
+    folder: sysklogd-1.5.1
     url: https://www.infodrom.org/projects/sysklogd/download/sysklogd-1.5.1.tar.gz
   sysvinit:
-    url: https://download.savannah.gnu.org/releases/sysvinit/sysvinit-3.04.tar.xz
-  sysvinit.patch:
-    url: https://www.linuxfromscratch.org/patches/lfs/11.2-rc1/sysvinit-3.04-consolidated-1.patch
+    folder: sysvinit-3.04-consolidated-1
+    url: https://www.linuxfromscratch.org/patches/lfs/development/sysvinit-3.04-consolidated-1.patch
   tar:
+    folder: tar-1.34
     url: https://ftp.gnu.org/gnu/tar/tar-1.34.tar.xz
-  tcl8:
+  tcl-html:
+    folder: tcl8.6.12-html
     url: https://downloads.sourceforge.net/tcl/tcl8.6.12-html.tar.gz
+  tcl-src:
+    folder: tcl8.6.12-src
+    url: https://downloads.sourceforge.net/tcl/tcl8.6.12-src.tar.gz
   texinfo:
+    folder: texinfo-6.8
     url: https://ftp.gnu.org/gnu/texinfo/texinfo-6.8.tar.xz
-  tzdata2022c:
-    url: https://www.iana.org/time-zones/repository/releases/tzdata2022c.tar.gz
-  udev:
+  tzdata:
+    folder: tzdata2022d
+    url: https://www.iana.org/time-zones/repository/releases/tzdata2022d.tar.gz
+  udev-lfs:
+    folder: udev-lfs-20171102
     url: https://anduin.linuxfromscratch.org/LFS/udev-lfs-20171102.tar.xz
-  util:
+  util-linux:
+    folder: util-linux-2.38.1
     url: https://www.kernel.org/pub/linux/utils/util-linux/v2.38/util-linux-2.38.1.tar.xz
   vim:
+    folder: vim-9.0.0228
     url: https://anduin.linuxfromscratch.org/LFS/vim-9.0.0228.tar.gz
   wheel:
+    folder: wheel-0.37.1
     url: https://anduin.linuxfromscratch.org/LFS/wheel-0.37.1.tar.gz
   xz:
+    folder: xz-5.2.6
     url: https://tukaani.org/xz/xz-5.2.6.tar.xz
   zlib:
+    folder: zlib-1.2.12
     url: https://zlib.net/zlib-1.2.12.tar.xz
   zstd:
-    url: https://github.com/facebook/zstd/releases/download/v1.5.2/zstd-1.5.2.tar.gz
-  zstd.patch:
-    url: https://www.linuxfromscratch.org/patches/lfs/11.2-rc1/zstd-1.5.2-upstream_fixes-1.patch
+    folder: zstd-1.5.2-upstream_fixes-1
+    url: https://www.linuxfromscratch.org/patches/lfs/development/zstd-1.5.2-upstream_fixes-1.patch

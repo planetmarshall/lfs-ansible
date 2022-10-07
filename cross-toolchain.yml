@@ -1,24 +1,23 @@
-- name: lfs-tools
+- name: lfs-cross-toolchain
   hosts: lfs_host
   become_user: lfs
-  become: yes
+  become: true
+
   vars_files:
     - vars/tools.yml
   vars:
     lfs_folder: /mnt/lfs
+    lfs_target: x86_64-lfs-linux-gnu
     source_folder: '{{ lfs_folder }}/sources'
+    compile_jobs: 8
   environment:
     LFS: '{{ lfs_folder }}'
-    CC: gcc
-    CXX: g++
+    LC_ALL: POSIX
+    LFS_TGT: '{{ lfs_target }}'
+    PATH: '{{ lfs_folder }}/tools/bin:/usr/bin'
+    CONFIG_SITE: '{{ lfs_folder }}/usr/share/config.site'
+
   tasks:
-    - name: Set LFS_TGT
-      shell: echo $(uname -m)-lfs-linux-gnu
-      register: lfs_tgt_echo
-
-    - set_fact:
-        lfs_tgt: '{{ lfs_tgt_echo.stdout }}'
-
     - name: download and compile binutils
       include_tasks: tasks/download_and_compile.yml
       vars:
@@ -27,7 +26,7 @@
         configure: >
           ../configure --prefix=$LFS/tools \
                        --with-sysroot=$LFS \
-                       --target={{ lfs_tgt }} \
+                       --target=$LFS_TGT   \
                        --disable-nls       \
                        --enable-gprofng=no \
                        --disable-werror
@@ -36,7 +35,7 @@
       unarchive:
         src: '{{ item.url }}'
         dest: '{{ source_folder }}'
-        creates: "{{ item.folder }}"
+        creates: "{{ source_folder }}/{{ item.folder }}"
         remote_src: yes
       loop:
         - '{{ tools.gcc }}'
@@ -71,7 +70,7 @@
       - name: create build folder
         file:
           path: '{{ build_folder }}'
-        state: directory
+          state: directory
 
       - name: configure gcc
         shell: |
@@ -82,6 +81,8 @@
               --with-sysroot=$LFS       \
               --with-newlib             \
               --without-headers         \
+              --enable-default-pie      \
+              --enable-default-ssp      \
               --disable-nls             \
               --disable-shared          \
               --disable-multilib        \
@@ -98,14 +99,16 @@
           chdir: '{{ build_folder }}'
 
       - name: compile gcc
-        shell: make -j
+        shell: make -j {{ compile_jobs }}
         args:
+          creates: '{{ build_folder }}/{{ lfs_target }}/libgcc'
           chdir: '{{ build_folder }}'
 
       - name: install gcc
         shell: make install
         args:
           chdir: '{{ build_folder }}'
+          creates: '{{ lfs_folder }}/tools/bin/{{ lfs_target }}-gcc'
 
     - name: fix gcc headers
       shell: |
@@ -113,4 +116,29 @@
             `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/install-tools/include/limits.h
       args:
         chdir: '{{ source_folder }}/{{ tools.gcc.folder }}'
+
+    - name: install linux headers
+      vars:
+        folder: "{{ source_folder }}/{{ tools.linux.folder }}"
+      block:
+        - name: download linux headers
+          unarchive:
+            src: '{{ tools.linux.url }}'
+            dest: '{{ source_folder }}'
+            creates: "{{ source_folder }}/{{ tools.linux.folder }}"
+            remote_src: yes
+
+        - name: clean headers
+          shell: make mrproper
+          args:
+            chdir: '{{ folder }}'
+
+        - name: install headers
+          shell: |
+            make headers
+            find usr/include -type f ! -name '*.h' -delete
+            cp -rv usr/include $LFS/usr
+          args:
+            chdir: '{{ folder }}'
+
 

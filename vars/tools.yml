@@ -89,9 +89,10 @@ tools:
   glibc:
     folder: glibc-2.36
     url: https://ftp.gnu.org/gnu/glibc/glibc-2.36.tar.xz
-  glibc-patch:
+  glibc_patch:
     folder: glibc-2.36-fhs-1
-    url: https://www.linuxfromscratch.org/patches/lfs/development/glibc-2.36-fhs-1.patch
+    url: https://lfs.koddos.net/patches/lfs/development/glibc-2.36-fhs-1.patch
+    name: glibc-2.36-fhs-1.patch
   gmp:
     folder: gmp-6.2.1
     url: https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz

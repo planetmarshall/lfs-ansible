@@ -1,5 +1,7 @@
 - name: lfs-cross-toolchain
   hosts: lfs_host
+  collections:
+    - ansible.posix
   become_user: lfs
   become: true
 
@@ -81,8 +83,6 @@
               --with-sysroot=$LFS       \
               --with-newlib             \
               --without-headers         \
-              --enable-default-pie      \
-              --enable-default-ssp      \
               --disable-nls             \
               --disable-shared          \
               --disable-multilib        \
@@ -154,22 +154,30 @@
             remote_src: yes
 
         - name: create symbolic link for lsb compliance
-          shell: |
-              case $(uname -m) in
-                i?86)   ln -sfv ld-linux.so.2 $LFS/lib/ld-lsb.so.3
-                ;;
-                x86_64) ln -sfv ../lib/ld-linux-x86-64.so.2 $LFS/lib64
-                  ln -sfv ../lib/ld-linux-x86-64.so.2 $LFS/lib64/ld-lsb-x86-64.so.3
-              ;;
-              esac
-          args:
-            chdir: '{{ folder }}'
+          file:
+            state: link
+            src: ../lib/ld-linux-x86-64.so.2
+            path: $LFS/lib64/ld-linux-x86-64.so.2
+            force: yes
+
+        - name: create symbolic link for lsb compliance
+          file:
+            state: link
+            src: ../lib/ld-linux-x86-64.so.2
+            path: $LFS/lib64/ld-lsb-x86-64.so.3
+            force: yes
+
+        - name: download patch
+          get_url:
+            url: '{{ tools.glibc_patch.url }}'
+            dest: '{{ folder }}/{{ tools.glibc_patch.name }}'
 
         - name: apply patch
-          ansible.posix.patch:
-            src: '{{ tools.glibc-patch.url }}'
-            remote_src: true
+          patch:
+            src: '{{ folder }}/{{ tools.glibc_patch.name }}'
             basedir: '{{ folder }}'
+            remote_src: yes
+            strip: 1
 
         - name: create build folder
           file:
@@ -196,17 +204,68 @@
         - name: build glibc
           shell: make -j
           args:
+            creates: '{{ build_folder }}/elf/ldd'
             chdir: '{{ build_folder }}'
 
         - name: install glibc
           shell: make DESTDIR=$LFS install
           args:
+            creates: '{{ lfs_folder }}/usr/bin/ldd'
             chdir: '{{ build_folder }}'
 
         - name: fix executable loader path
           shell: sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
 
+        - name: sanity check
+          shell: |
+            echo 'int main(){}' | {{ lfs_target }}-gcc -xc -
+            readelf -l a.out | grep ld-linux
+            rm -v a.out
+
         - name: fix limits.h installation
           shell: $LFS/tools/libexec/gcc/$LFS_TGT/12.2.0/install-tools/mkheaders
 
+    - name: install libstdc++
+      vars:
+        folder: '{{ source_folder }}/{{ tools.gcc.folder }}'
+        build_folder: '{{ folder }}/build-libstdc++'
+      block:
+        - name: create build folder
+          file:
+            path: '{{ build_folder }}'
+            state: directory
 
+        - name: configure libstdc++
+          shell: |
+            ../libstdc++-v3/configure           \
+              --host=$LFS_TGT                 \
+              --build=$(../config.guess)      \
+              --prefix=/usr                   \
+              --disable-multilib              \
+              --disable-nls                   \
+              --disable-libstdcxx-pch         \
+              --with-gxx-include-dir=/tools/$LFS_TGT/include/c++/12.2.0
+          args:
+            chdir: '{{ build_folder }}'
+
+        - name: build libstdc++
+          shell: make -j
+          args:
+            chdir: '{{ build_folder }}'
+
+        - name: install libstdc++
+          shell: make DESTDIR=$LFS install
+          args:
+            chdir: '{{ build_folder }}'
+
+        - name: remove libtool archive files
+          file:
+            path: '{{ lfs_folder }}/usr/lib/libstdc++.la'
+
+        - name: remove libtool archive files
+          file:
+            path: '{{ lfs_folder }}/usr/lib/libstdc++fs.la'
+
+        - name: remove libtool archive files
+          file:
+            path: '{{ lfs_folder }}/usr/lib/libsupc++.la'
